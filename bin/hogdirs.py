@@ -27,7 +27,7 @@ class Dir:
 
 
 if __name__ == "__main__":
-    sizes = []
+    dir_sizes = []
     # def get_arguments(self):
     # from optparse import OptionParser
     # parser = OptionParser()
@@ -53,11 +53,11 @@ if __name__ == "__main__":
 
     # Walk arg 1, or pwd in no arg supplied.
     for root, dirs, files in walk(argv[1] if len(argv) > 1 else getcwdu()):
-        sizes.append(Dir(root,
+        dir_sizes.append(Dir(root,
                          sum(getsize(join(root, name)) for name in files if access(join(root, name), R_OK)),
                          len(files)))
 
-    sizes.sort(reverse=True)
+    dir_sizes.sort(reverse=True)
     # Show top max arg 2 entries, or 10 if no arg supplied.
-    for k in sizes[0:int(argv[2] if len(argv) > 2 else 10)]:
-        print k.getSize() + "\t" + k.path + "\t" + str(k.filecount) + " files"
+    for dir in dir_sizes[0:int(argv[2] if len(argv) > 2 else 10)]:
+        print dir.getSize() + "\t" + dir.path + "\t" + str(dir.filecount) + " files"
