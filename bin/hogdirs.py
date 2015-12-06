@@ -25,6 +25,8 @@ class Dir:
         else:
             return str(round(self.size / (kilo ** 4), precision)) + " TB"
 
+    def printSizeInfo(self):
+        return self.getSize() + "\t" + self.path + "\t" + str(self.filecount) + " files"
 
 if __name__ == "__main__":
     # def get_arguments(self):
@@ -60,4 +62,4 @@ if __name__ == "__main__":
     dir_sizes.sort(reverse=True)
     # Show top max arg 2 entries, or 10 if no arg supplied.
     for dir in dir_sizes[0:int(argv[2] if len(argv) > 2 else 10)]:
-        print dir.getSize() + "\t" + dir.path + "\t" + str(dir.filecount) + " files"
+        print dir.printSizeInfo()
