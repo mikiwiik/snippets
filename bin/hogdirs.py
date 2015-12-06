@@ -27,7 +27,6 @@ class Dir:
 
 
 if __name__ == "__main__":
-    dir_sizes = []
     # def get_arguments(self):
     # from optparse import OptionParser
     # parser = OptionParser()
@@ -51,6 +50,7 @@ if __name__ == "__main__":
     from sys import argv
     from os.path import join, getsize
 
+    dir_sizes = []
     # Walk arg 1, or pwd in no arg supplied.
     for root, dirs, files in walk(argv[1] if len(argv) > 1 else getcwdu()):
         dir_sizes.append(Dir(root,
