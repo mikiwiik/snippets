@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # def get_arguments(self):
     # from optparse import OptionParser
     # parser = OptionParser()
-    #    parser.add_option("-n", "--show-number", action="store_true", dest="checkout",
+    # parser.add_option("-n", "--show-number", action="store_true", dest="checkout",
     #                      help="Checkout a clean working copy before performing operations.")
     #    parser.set_default("checkout", False)
     #    parser.add_option("--show-macros", action="callback", callback=show_macros_callback,
@@ -55,9 +55,16 @@ if __name__ == "__main__":
     dir_sizes = []
     # Walk arg 1, or pwd in no arg supplied.
     for root, dirs, files in walk(argv[1] if len(argv) > 1 else getcwdu()):
-        dir_sizes.append(Dir(root,
-                         sum(getsize(join(root, name)) for name in files if access(join(root, name), R_OK)),
-                         len(files)))
+        file_sizes = 0
+        file_count = 0
+        for name in files:
+            full_path = join(root, name)
+            if access(full_path, R_OK):
+                file_sizes += getsize(full_path)
+                file_count += 1
+
+        dir = Dir(root, file_sizes, file_count)
+        dir_sizes.append(dir)
 
     dir_sizes.sort(reverse=True)
     # Show top max arg 2 entries, or 10 if no arg supplied.
