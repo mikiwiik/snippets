@@ -35,33 +35,32 @@ def makePathRelative(current_dir, path):
         return path.replace(current_dir, '')
 
 if __name__ == "__main__":
-    # def get_arguments(self):
-    # from optparse import OptionParser
-    # parser = OptionParser()
-    # parser.add_option("-n", "--show-number", action="store_true", dest="checkout",
-    #                      help="Checkout a clean working copy before performing operations.")
-    #    parser.set_default("checkout", False)
-    #    parser.add_option("--show-macros", action="callback", callback=show_macros_callback,
-    #                      help="Show all URL macros and exit.")
-    #    parser.set_default("checkout", False)
-    #    (options, args) = parser.parse_args()
-    #    checkout=options.checkout
-
-    #    # The working copy is always the final argument
-    #    if len(args) > 0:
-    #        workingCopy=args[-1]
-    #        if len(args) == 3:
-    #            source=expand_macro(args[0])
-    #            target=expand_macro(args[1])
-
+    from docopt import docopt
     from os import access, getcwdu, R_OK, walk
-    from sys import argv
     from os.path import join, getsize
 
-    dir_sizes = []
-    # Walk arg 1, or pwd in no arg supplied.
+    documentation = """Expose hogdirs
+    Usage:
+      hogdirs.py [PATH]
+      hogdirs.py [PATH AMOUNT_SHOWN]
+      hogdirs.py (-h | --help)
+
+    Arguments:
+      PATH          A file path examine. Defaults to current working directory.
+      AMOUNT_SHOWN  The amount of directory entries to show. Defaults to 10.
+
+    Options:
+      -h --help     Show this screen.
+    """
+    arguments = docopt(documentation)
+    print(arguments)
+
     current_dir = getcwdu()
-    for root, dirs, files in walk(argv[1] if len(argv) > 1 else current_dir):
+    path_to_examine = arguments['PATH'] if arguments['PATH'] is not None else current_dir
+    amount_to_show = arguments['AMOUNT_SHOWN'] if arguments['AMOUNT_SHOWN'] is not None else 10
+
+    dir_sizes = []
+    for root, dirs, files in walk(path_to_examine):
         file_sizes = 0
         file_count = 0
         for name in files:
@@ -75,5 +74,5 @@ if __name__ == "__main__":
 
     dir_sizes.sort(reverse=True)
     # Show top max arg 2 entries, or 10 if no arg supplied.
-    for dir in dir_sizes[0:int(argv[2] if len(argv) > 2 else 10)]:
+    for dir in dir_sizes[0:int(amount_to_show)]:
         print dir.printSizeInfo()
