@@ -15,15 +15,15 @@ class Dir:
         """Get size of directory entries, with correct size abbreviation suffix, rounded down to precision."""
         kilo = 1000.0
         if self.size < kilo:
-            return str(self.size) + " B"
+            return str(self.size) + "B"
         elif self.size < kilo ** 2:
-            return str(round(self.size / kilo, precision)) + " kB"
+            return str(round(self.size / kilo, precision)) + "K"
         elif self.size < kilo ** 3:
-            return str(round(self.size / (kilo ** 2), precision)) + " MB"
+            return str(round(self.size / (kilo ** 2), precision)) + "M"
         elif self.size < kilo ** 4:
-            return str(round(self.size / (kilo ** 3), precision)) + " GB"
+            return str(round(self.size / (kilo ** 3), precision)) + "G"
         else:
-            return str(round(self.size / (kilo ** 4), precision)) + " TB"
+            return str(round(self.size / (kilo ** 4), precision)) + "T"
 
     def printSizeInfo(self):
         return self.getSize() + "\t" + self.path + "\t" + str(self.filecount) + " files"
