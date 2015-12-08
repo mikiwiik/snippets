@@ -30,8 +30,10 @@ class Dir:
 
 
 def makePathRelative(current_dir, path):
-    return path.replace(current_dir, '')
-
+    if (current_dir == path):
+        return "."
+    else:
+        return path.replace(current_dir, '')
 
 if __name__ == "__main__":
     # def get_arguments(self):
