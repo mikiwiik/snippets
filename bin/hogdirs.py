@@ -28,6 +28,11 @@ class Dir:
     def printSizeInfo(self):
         return self.getSize() + "\t" + self.path + "\t" + str(self.filecount) + " files"
 
+
+def makePathRelative(current_dir, path):
+    return path.replace(current_dir, '')
+
+
 if __name__ == "__main__":
     # def get_arguments(self):
     # from optparse import OptionParser
@@ -54,8 +59,8 @@ if __name__ == "__main__":
 
     dir_sizes = []
     # Walk arg 1, or pwd in no arg supplied.
-    cwdu = getcwdu()
-    for root, dirs, files in walk(argv[1] if len(argv) > 1 else cwdu):
+    current_dir = getcwdu()
+    for root, dirs, files in walk(argv[1] if len(argv) > 1 else current_dir):
         file_sizes = 0
         file_count = 0
         for name in files:
@@ -64,7 +69,7 @@ if __name__ == "__main__":
                 file_sizes += getsize(full_path)
                 file_count += 1
 
-        dir = Dir(root.replace(cwdu, ''), file_sizes, file_count)
+        dir = Dir(makePathRelative(current_dir, root), file_sizes, file_count)
         dir_sizes.append(dir)
 
     dir_sizes.sort(reverse=True)
