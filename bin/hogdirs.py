@@ -54,7 +54,8 @@ if __name__ == "__main__":
 
     dir_sizes = []
     # Walk arg 1, or pwd in no arg supplied.
-    for root, dirs, files in walk(argv[1] if len(argv) > 1 else getcwdu()):
+    cwdu = getcwdu()
+    for root, dirs, files in walk(argv[1] if len(argv) > 1 else cwdu):
         file_sizes = 0
         file_count = 0
         for name in files:
@@ -63,7 +64,7 @@ if __name__ == "__main__":
                 file_sizes += getsize(full_path)
                 file_count += 1
 
-        dir = Dir(root, file_sizes, file_count)
+        dir = Dir(root.replace(cwdu, ''), file_sizes, file_count)
         dir_sizes.append(dir)
 
     dir_sizes.sort(reverse=True)
