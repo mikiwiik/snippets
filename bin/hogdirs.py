@@ -11,7 +11,7 @@ class Dir:
     def __cmp__(self, other):
         return cmp(self.size, other.size)
 
-    def getSize(self, precision=3):
+    def getSize(self, precision=1):
         """Get size of directory entries, with correct size abbreviation suffix, rounded down to precision."""
         kilo = 1000.0
         if self.size < kilo:
