@@ -26,8 +26,7 @@ class Dir:
             return str(round(self.size / (kilo ** 4), precision)) + "T"
 
     def printSizeInfo(self):
-        return self.getSize() + "\t" + self.path + "\t" + str(self.filecount) + " files"
-
+        return self.getSize() + "\t" + str(self.filecount) + "\t" + self.path
 
 def makePathRelative(current_dir, path):
     if (current_dir == path):
