@@ -28,11 +28,13 @@ class Dir:
     def printSizeInfo(self):
         return self.getSize() + "\t" + str(self.filecount) + "\t" + self.path
 
+
 def makePathRelative(current_dir, path):
     if (current_dir == path):
         return "."
     else:
         return path.replace(current_dir, '')
+
 
 if __name__ == "__main__":
     from docopt import docopt
@@ -41,23 +43,22 @@ if __name__ == "__main__":
 
     documentation = """Expose hogdirs
     Usage:
-      hogdirs.py [PATH]
-      hogdirs.py [PATH AMOUNT_SHOWN]
+      hogdirs.py [options] [PATH] 
       hogdirs.py (-h | --help)
 
     Arguments:
-      PATH          A file path examine. Defaults to current working directory.
-      AMOUNT_SHOWN  The amount of directory entries to show. Defaults to 10.
+      PATH          The file path to examine. Defaults to current working directory.
 
     Options:
-      -h --help     Show this screen.
+      -h --help                 Show this screen.
+      -l COUNT --limit=COUNT    Limit the amount of directories shown [Default: 10]
     """
     arguments = docopt(documentation)
     print(arguments)
 
     current_dir = getcwdu()
     path_to_examine = arguments['PATH'] if arguments['PATH'] is not None else current_dir
-    amount_to_show = arguments['AMOUNT_SHOWN'] if arguments['AMOUNT_SHOWN'] is not None else 10
+    amount_to_show = arguments['--limit']
 
     dir_sizes = []
     for root, dirs, files in walk(path_to_examine):
@@ -73,6 +74,5 @@ if __name__ == "__main__":
         dir_sizes.append(dir)
 
     dir_sizes.sort(reverse=True)
-    # Show top max arg 2 entries, or 10 if no arg supplied.
     for dir in dir_sizes[0:int(amount_to_show)]:
         print dir.printSizeInfo()
