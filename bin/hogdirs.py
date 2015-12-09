@@ -64,7 +64,7 @@ if __name__ == "__main__":
     current_dir = getcwdu()
     path_to_examine = arguments['PATH'] if arguments['PATH'] is not None else current_dir
 
-    dir_sizes = []
+    dirs_found = []
     for root, dirs, files in walk(path_to_examine):
         file_sizes = 0
         file_count = 0
@@ -75,8 +75,8 @@ if __name__ == "__main__":
                 file_count += 1
 
         dir = Dir(makePathRelative(current_dir, root), file_sizes, file_count)
-        dir_sizes.append(dir)
+        dirs_found.append(dir)
 
-    dir_sizes.sort(reverse=True)
-    for dir in getDirsToShow(dir_sizes, arguments):
+    dirs_found.sort(reverse=True)
+    for dir in getDirsToShow(dirs_found, arguments):
         print dir.printSizeInfo()
