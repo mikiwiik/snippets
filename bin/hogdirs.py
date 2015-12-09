@@ -28,13 +28,17 @@ class Dir:
     def printSizeInfo(self):
         return self.getSize() + "\t" + str(self.filecount) + "\t" + self.path
 
-
 def makePathRelative(current_dir, path):
     if (current_dir == path):
         return "."
     else:
         return path.replace(current_dir, '')
 
+def getDirsToShow(dirs, arguments):
+    if arguments['--shown-all']:
+        return dirs
+    else:
+        return dirs[0:int(arguments['--limit'])]
 
 if __name__ == "__main__":
     from docopt import docopt
@@ -52,13 +56,13 @@ if __name__ == "__main__":
     Options:
       -h --help                 Show this screen.
       -l COUNT --limit=COUNT    Limit the amount of directories shown [Default: 10]
+      -a --shown-all            Do not limit the amount of directories shown.
     """
     arguments = docopt(documentation)
     print(arguments)
 
     current_dir = getcwdu()
     path_to_examine = arguments['PATH'] if arguments['PATH'] is not None else current_dir
-    amount_to_show = arguments['--limit']
 
     dir_sizes = []
     for root, dirs, files in walk(path_to_examine):
@@ -74,5 +78,5 @@ if __name__ == "__main__":
         dir_sizes.append(dir)
 
     dir_sizes.sort(reverse=True)
-    for dir in dir_sizes[0:int(amount_to_show)]:
+    for dir in getDirsToShow(dir_sizes, arguments):
         print dir.printSizeInfo()
